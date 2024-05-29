@@ -1,13 +1,16 @@
 // This file contains type definitions for your data.
 // It describes the shape of the data, and what data type each property should accept.
 // For simplicity of teaching, we're manually defining these types.
+
+import { RowDataPacket } from 'mysql2';
+
 // However, these types are generated automatically if you're using an ORM such as Prisma.
-export type User = {
+export interface User extends RowDataPacket {
   id: string;
   name: string;
   email: string;
   password: string;
-};
+}
 
 export type Customer = {
   id: string;
@@ -16,35 +19,45 @@ export type Customer = {
   image_url: string;
 };
 
-export type Invoice = {
+export interface Invoice extends RowDataPacket {
   id: string;
   customer_id: string;
   amount: number;
   date: string;
-  // In TypeScript, this is called a string union type.
-  // It means that the "status" property can only be one of the two strings: 'pending' or 'paid'.
   status: 'pending' | 'paid';
-};
+}
 
-export type Revenue = {
+export interface Revenue extends RowDataPacket {
   month: string;
   revenue: number;
-};
+}
 
-export type LatestInvoice = {
+export interface LatestInvoice extends RowDataPacket {
   id: string;
   name: string;
   image_url: string;
   email: string;
   amount: string;
-};
+}
 
-// The database returns a number for amount, but we later format it to a string with the formatCurrency function
-export type LatestInvoiceRaw = Omit<LatestInvoice, 'amount'> & {
+export interface LatestInvoiceRaw
+  extends RowDataPacket,
+    Omit<LatestInvoice, 'amount'> {
   amount: number;
-};
+}
 
-export type InvoicesTable = {
+export interface Count extends RowDataPacket {
+  count: number;
+}
+
+// Yes its overkill I am just too lazy to install lodash
+// Also this is prettier and who cares
+export interface StatusCount extends RowDataPacket {
+  paid: number;
+  pending: number;
+}
+
+export interface InvoicesTable extends RowDataPacket {
   id: string;
   customer_id: string;
   name: string;
@@ -53,7 +66,7 @@ export type InvoicesTable = {
   date: string;
   amount: number;
   status: 'pending' | 'paid';
-};
+}
 
 export type CustomersTableType = {
   id: string;
@@ -75,14 +88,14 @@ export type FormattedCustomersTable = {
   total_paid: string;
 };
 
-export type CustomerField = {
+export interface CustomerField extends RowDataPacket {
   id: string;
   name: string;
-};
+}
 
-export type InvoiceForm = {
+export interface InvoiceForm extends RowDataPacket {
   id: string;
   customer_id: string;
   amount: number;
   status: 'pending' | 'paid';
-};
+}

@@ -1,5 +1,10 @@
 import { Revenue } from './definitions';
 
+export const randomTimeout = async (min: number, max: number) => {
+  const duration = Math.floor(Math.random() * (max - min + 1)) + min;
+  return new Promise((resolve) => setTimeout(resolve, duration));
+};
+
 export const formatCurrency = (amount: number) => {
   return (amount / 100).toLocaleString('en-US', {
     style: 'currency',
